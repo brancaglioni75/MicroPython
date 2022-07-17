@@ -1,0 +1,25 @@
+# Curso Aprenda MicroPython: Linguagem pyhton para microcontroladores
+# Autor: FilipeFlop
+# Projeto 1 - Jogo de Reação
+ 
+from machine import Pin
+from utime import sleep, ticks_ms, ticks_diff
+from urandom import uniform
+ 
+botao = Pin(14, Pin.IN, Pin.PULL_DOWN)
+led   = Pin(15, Pin.OUT)
+ 
+apertou = False
+ 
+def botao_handler(pin):
+    global apertou
+    if not apertou:
+        apertou = True
+        tempo_reacao = ticks_diff(ticks_ms(), timer_start)
+        print("Seu tempo de reação foi: ", str(tempo_reacao), " milisegundos")
+ 
+led.value(1)
+sleep(uniform(5, 10))
+led.value(0)
+timer_start = ticks_ms()
+botao.irq(trigger = Pin.IRQ_RISING, handler = botao_handler)
